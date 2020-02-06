@@ -1,0 +1,228 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+ <html lang="en"> 
+     <head> 
+         <title>Cartesian Coordinates Map</title> 
+         <meta http-equiv="content-type" content="text/html; charset=utf-8"> 
+         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> 
+         <style type="text/css"> 
+         body {background-color: #f0f8ff;}
+         #chartContainer{ overflow: hidden; }
+         .chart-options{ display:none; }
+         .chart-options{ padding:10px 0 10px 0; background-color:#e6eef2; border:1px solid silver; }
+         .options-row{ margin:0 10px 10px 10px }
+         .options-row>label:first-child, .options-row detail{ color:#13369f; font-weight:bold; }
+         .options-row input[type='radio']{ margin:5px }
+         p.help-block{ font-size:11px; color:#666; font-style:oblique; margin-top:0; }
+         .main-content{ margin: 5px; }
+         .options-row label{ font-weight: normal; }
+         input[type=checkbox]{ margin-right:5px; }
+         label.option-section{ border-bottom: solid 1px #e6e9eb; width: 100 % ; }
+         .chart-column{ padding-top: 20px; padding-bottom: 30px; border-left: 1px solid #ddd; }
+         .print-section a{ padding-right: 20px; text-decoration: none; }
+         .cluster-selection{ border-bottom: dashed 1px #e6e9eb; }
+         .cluster-selection label{ white-space: nowrap; color: #313030; }
+         #id_display_count { margin:10px; }
+         fieldset { margin-top: 10px; }
+         @media print{ title, #banner,.chart-options-section{ display: none; } #chartContainer{ margin: 20px; }.chart-column{ border-left: 0; } }
+         </style> 
+         <script type='text/javascript' src='https://www.satscan.org/javascript/jquery/jquery-1.12.4/jquery-1.12.4.js'></script> 
+         <script type='text/javascript' src='https://www.satscan.org/javascript/clustercharts/jQuery.resizeEnd.js'></script> 
+         <script type="text/javascript"> 
+             jQuery.noConflict(); 
+         </script> 
+         <script type='text/javascript' src='https://www.satscan.org/javascript/clustercharts/mootools-1.6.0/MooTools-Core-1.6.0.js'></script> 
+         <script type='text/javascript' src='https://www.satscan.org/javascript/clustercharts/clusterchart-1.1.js'></script> 
+         <script type='text/javascript' src='https://www.satscan.org/javascript/clustercharts/mootools-1.6.0/MooTools-More-1.6.0.js'></script> 
+         <script type='text/javascript' src='https://www.satscan.org/javascript/clustercharts/FileSaver-2014-06-24.js'></script> 
+         <script type='text/javascript' src='https://www.satscan.org/javascript/clustercharts/Blob-2014-07-24.js'></script> 
+         <script type='text/javascript' src='https://www.satscan.org/javascript/clustercharts/canvas-toBlob-2016-05-26.js'></script> 
+         <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script> 
+         <script type='text/javascript'> 
+          var clusters = [ 
+             { id: 1, significant : true, highrate : true, hierarchical : true, gini : false, ellipse : false, x : 528125.000000, y : 184625.000000, z : 250.000000, semimajor : 0.000000, angle : 0.00, shape : 0.00, color : '#F13C3F', pointscolor : '#FF1A1A', tip : '<div style="text-decoration:underline; ">Cluster 1</div>Time frame : 2011/3/11 to 2011/3/13<br>Number of cases : 21<br>Expected cases : 3.54<br>Observed / expected : 5.93<br>P-value : 0.001<br>', points : [[528125.000000, 184625.000000],[527875.000000, 184625.000000],[528125.000000, 184375.000000]] },
+{ id: 2, significant : true, highrate : true, hierarchical : true, gini : false, ellipse : false, x : 529125.000000, y : 182625.000000, z : 500.000000, semimajor : 0.000000, angle : 0.00, shape : 0.00, color : '#F13C3F', pointscolor : '#FF1A1A', tip : '<div style="text-decoration:underline; ">Cluster 2</div>Time frame : 2011/3/2 to 2011/3/2<br>Number of cases : 14<br>Expected cases : 1.91<br>Observed / expected : 7.34<br>P-value : 0.001<br>', points : [[529125.000000, 182625.000000],[528875.000000, 182625.000000],[529125.000000, 182375.000000],[529125.000000, 182875.000000],[529375.000000, 182625.000000],[528875.000000, 182375.000000],[528875.000000, 182875.000000],[529375.000000, 182375.000000],[529375.000000, 182875.000000],[529015.000000, 182267.000000],[529339.000000, 182305.000000],[529125.000000, 182125.000000],[529125.000000, 183125.000000],[529625.000000, 182625.000000]] },
+{ id: 3, significant : true, highrate : true, hierarchical : true, gini : false, ellipse : false, x : 528875.000000, y : 183875.000000, z : 0.000000, semimajor : 0.000000, angle : 0.00, shape : 0.00, color : '#F13C3F', pointscolor : '#FF1A1A', tip : '<div style="text-decoration:underline; ">Cluster 3</div>Time frame : 2011/3/17 to 2011/3/18<br>Number of cases : 21<br>Expected cases : 4.99<br>Observed / expected : 4.21<br>P-value : 0.005<br>', points : [[528875.000000, 183875.000000]] },
+{ id: 4, significant : false, highrate : true, hierarchical : true, gini : false, ellipse : false, x : 529125.000000, y : 184875.000000, z : 250.000000, semimajor : 0.000000, angle : 0.00, shape : 0.00, color : '#F13C3F', pointscolor : '#FF1A1A', tip : '<div style="text-decoration:underline; ">Cluster 4</div>Time frame : 2011/3/26 to 2011/4/1<br>Number of cases : 10<br>Expected cases : 1.80<br>Observed / expected : 5.55<br>P-value : 0.799<br>', points : [[529125.000000, 184875.000000],[528875.000000, 184875.000000],[529125.000000, 184625.000000]] },
+{ id: 5, significant : false, highrate : true, hierarchical : true, gini : false, ellipse : false, x : 525875.000000, y : 183875.000000, z : 208.096132, semimajor : 0.000000, angle : 0.00, shape : 0.00, color : '#F13C3F', pointscolor : '#FF1A1A', tip : '<div style="text-decoration:underline; ">Cluster 5</div>Time frame : 2011/6/21 to 2011/6/21<br>Number of cases : 3<br>Expected cases : 0.063<br>Observed / expected : 47.43<br>P-value : 0.894<br>', points : [[525875.000000, 183875.000000],[526077.000000, 183925.000000]] },
+{ id: 6, significant : false, highrate : true, hierarchical : true, gini : false, ellipse : false, x : 528625.000000, y : 185625.000000, z : 353.553391, semimajor : 0.000000, angle : 0.00, shape : 0.00, color : '#F13C3F', pointscolor : '#FF1A1A', tip : '<div style="text-decoration:underline; ">Cluster 6</div>Time frame : 2011/6/23 to 2011/6/23<br>Number of cases : 6<br>Expected cases : 0.58<br>Observed / expected : 10.28<br>P-value : 0.914<br>', points : [[528625.000000, 185625.000000],[528375.000000, 185625.000000],[528625.000000, 185875.000000],[528875.000000, 185625.000000],[528916.000000, 185651.000000],[528375.000000, 185375.000000],[528375.000000, 185875.000000],[528875.000000, 185375.000000]] },
+{ id: 7, significant : false, highrate : true, hierarchical : true, gini : false, ellipse : false, x : 525375.000000, y : 183875.000000, z : 353.553391, semimajor : 0.000000, angle : 0.00, shape : 0.00, color : '#F13C3F', pointscolor : '#FF1A1A', tip : '<div style="text-decoration:underline; ">Cluster 7</div>Time frame : 2011/4/10 to 2011/4/10<br>Number of cases : 3<br>Expected cases : 0.073<br>Observed / expected : 40.99<br>P-value : 0.976<br>', points : [[525375.000000, 183875.000000],[525625.000000, 183875.000000],[525125.000000, 184125.000000]] } 
+             ]; 
+             var chart = null; 
+             var parameters = {scanrate:1/*high=1,low=2,highorlow=3*/,giniscan:false};
+             var cluster_region = {zmin:0,zmax:1,xsteps:20,ysteps:20,bubbleSize:8,xmin:525021.000000,xmax:529626.000000,ymin:181749.000000,ymax:186353.000000}; 
+             var cluster_region_points = [[525375.000000, 185125.000000],[525875.000000, 183625.000000],[529348.000000, 182097.000000],[526125.000000, 184375.000000],[526375.000000, 184625.000000],[527375.000000, 184125.000000],[529375.000000, 184375.000000],[526875.000000, 184125.000000],[527375.000000, 185375.000000],[528125.000000, 184875.000000],[528625.000000, 184125.000000],[529375.000000, 183125.000000],[528125.000000, 185375.000000],[529375.000000, 184625.000000],[528125.000000, 185125.000000],[527125.000000, 185375.000000],[525625.000000, 184625.000000],[529375.000000, 182125.000000],[528125.000000, 183875.000000],[526625.000000, 185625.000000],[529125.000000, 183375.000000],[528875.000000, 183625.000000],[529625.000000, 181875.000000],[529375.000000, 181875.000000],[527125.000000, 185875.000000],[529375.000000, 183875.000000],[529125.000000, 185625.000000],[528581.000000, 183451.000000],[528875.000000, 183375.000000],[527375.000000, 185875.000000],[529625.000000, 183125.000000],[528625.000000, 184375.000000],[528375.000000, 186125.000000],[528879.000000, 183985.000000],[529125.000000, 183625.000000],[528740.000000, 183710.000000],[528375.000000, 184625.000000],[527125.000000, 184625.000000],[525125.000000, 184375.000000],[526625.000000, 185375.000000],[529625.000000, 182375.000000],[529231.000000, 182008.000000],[529625.000000, 182875.000000],[528375.000000, 183875.000000],[525375.000000, 184625.000000],[526625.000000, 184375.000000],[526375.000000, 185625.000000],[526875.000000, 185875.000000],[529625.000000, 182125.000000],[525875.000000, 184625.000000],[526125.000000, 183875.000000],[529125.000000, 184375.000000],[526875.000000, 184375.000000],[526375.000000, 184375.000000],[529302.000000, 185530.000000],[527625.000000, 185625.000000],[525625.000000, 185125.000000],[529125.000000, 183875.000000],[529480.000000, 184844.000000],[528875.000000, 184375.000000],[528625.000000, 183875.000000],[527875.000000, 184125.000000],[529375.000000, 185125.000000],[528125.000000, 184125.000000],[526625.000000, 184125.000000],[527875.000000, 184875.000000],[528875.000000, 185125.000000],[529625.000000, 183625.000000],[527875.000000, 185375.000000],[525125.000000, 185875.000000],[529625.000000, 184875.000000],[525625.000000, 185375.000000],[526375.000000, 184125.000000],[529375.000000, 183625.000000],[529625.000000, 184375.000000],[526375.000000, 185125.000000],[527710.000000, 185254.000000],[528375.000000, 184375.000000],[526875.000000, 184625.000000],[526625.000000, 186125.000000],[527625.000000, 185125.000000],[527625.000000, 184875.000000],[525138.000000, 184544.000000],[526625.000000, 184625.000000],[526375.000000, 186125.000000],[526375.000000, 184875.000000],[526375.000000, 185875.000000],[529375.000000, 183375.000000],[527875.000000, 185625.000000],[529125.000000, 184125.000000],[528625.000000, 184875.000000],[527625.000000, 185875.000000],[527375.000000, 184875.000000],[527125.000000, 184375.000000],[525875.000000, 184875.000000],[528625.000000, 184625.000000],[525125.000000, 184875.000000],[528716.000000, 184194.000000],[528875.000000, 184625.000000],[529125.000000, 185125.000000],[526875.000000, 185375.000000],[525875.000000, 184375.000000],[528625.000000, 183375.000000],[529375.000000, 185375.000000],[528125.000000, 185625.000000],[529625.000000, 183375.000000],[526125.000000, 185625.000000],[527625.000000, 184625.000000],[529375.000000, 184125.000000],[528875.000000, 185875.000000],[527125.000000, 184875.000000],[529625.000000, 185125.000000],[527375.000000, 185125.000000],[527875.000000, 185125.000000],[525375.000000, 185625.000000],[527875.000000, 184375.000000],[525625.000000, 185625.000000],[525375.000000, 185875.000000],[527125.000000, 185125.000000],[529625.000000, 184625.000000],[526885.000000, 185552.000000],[526876.000000, 184126.000000],[527625.000000, 185375.000000],[525125.000000, 185625.000000],[528375.000000, 185125.000000],[527125.000000, 183875.000000],[528917.000000, 185052.000000],[529138.000000, 185243.000000],[526875.000000, 185625.000000],[525375.000000, 184875.000000],[527370.000000, 185465.000000],[527625.000000, 184125.000000],[526125.000000, 184875.000000],[528875.000000, 184125.000000],[525375.000000, 184375.000000],[525125.000000, 186125.000000],[526875.000000, 184875.000000],[527375.000000, 185625.000000],[525625.000000, 183625.000000],[525125.000000, 185375.000000],[528625.000000, 183125.000000],[529150.000000, 185318.000000],[526105.000000, 183920.000000],[525375.000000, 186125.000000],[525875.000000, 184125.000000],[526375.000000, 185375.000000],[527625.000000, 183625.000000],[527633.000000, 183879.000000],[529510.000000, 184186.000000],[526606.000000, 184125.000000],[526768.000000, 184352.000000],[526125.000000, 185125.000000],[525875.000000, 185875.000000],[528375.000000, 184875.000000]]; 
+             var entire_region = {zmin:0,zmax:1,xsteps:20,ysteps:20,bubbleSize:8,xmin:524125.000000,xmax:531375.000000,ymin:180616.000000,ymax:187866.000000}; 
+             var entire_region_points = [[530125.000000, 182875.000000],[530375.000000, 182625.000000],[525375.000000, 185125.000000],[530125.000000, 181125.000000],[525875.000000, 183625.000000],[530375.000000, 181625.000000],[529668.000000, 184863.000000],[530125.000000, 182125.000000],[530125.000000, 183375.000000],[529348.000000, 182097.000000],[526125.000000, 184375.000000],[529875.000000, 182125.000000],[526375.000000, 184625.000000],[527375.000000, 184125.000000],[529375.000000, 184375.000000],[530375.000000, 182875.000000],[530049.000000, 181862.000000],[530125.000000, 183125.000000],[530125.000000, 181375.000000],[526875.000000, 184125.000000],[527375.000000, 185375.000000],[528125.000000, 184875.000000],[529875.000000, 182375.000000],[528625.000000, 184125.000000],[530572.000000, 181378.000000],[530375.000000, 181375.000000],[529875.000000, 181375.000000],[531375.000000, 181625.000000],[529375.000000, 183125.000000],[528125.000000, 185375.000000],[529375.000000, 184625.000000],[528125.000000, 185125.000000],[529625.000000, 181625.000000],[527125.000000, 185375.000000],[525625.000000, 184625.000000],[530625.000000, 181625.000000],[529375.000000, 182125.000000],[528125.000000, 183875.000000],[526625.000000, 185625.000000],[524125.000000, 185375.000000],[529125.000000, 183375.000000],[530625.000000, 182125.000000],[530228.000000, 181462.000000],[530125.000000, 182625.000000],[528875.000000, 183625.000000],[529980.000000, 181412.000000],[529625.000000, 181875.000000],[529875.000000, 182625.000000],[530625.000000, 181375.000000],[529375.000000, 181875.000000],[530125.000000, 181625.000000],[527125.000000, 185875.000000],[529375.000000, 183875.000000],[529125.000000, 185625.000000],[530625.000000, 182375.000000],[528581.000000, 183451.000000],[528875.000000, 183375.000000],[530375.000000, 182125.000000],[527375.000000, 185875.000000],[529625.000000, 183125.000000],[528625.000000, 184375.000000],[528375.000000, 186125.000000],[530375.000000, 182375.000000],[528879.000000, 183985.000000],[529125.000000, 183625.000000],[529875.000000, 181875.000000],[530375.000000, 181875.000000],[528740.000000, 183710.000000],[530563.000000, 181446.000000],[528375.000000, 184625.000000],[531125.000000, 181875.000000],[530625.000000, 182875.000000],[527125.000000, 184625.000000],[525125.000000, 184375.000000],[526625.000000, 185375.000000],[531375.000000, 181875.000000],[530125.000000, 181875.000000],[530875.000000, 182125.000000],[529625.000000, 182375.000000],[531125.000000, 181625.000000],[530125.000000, 182375.000000],[525875.000000, 186375.000000],[529231.000000, 182008.000000],[530625.000000, 182625.000000],[529625.000000, 182875.000000],[529875.000000, 183125.000000],[528375.000000, 183875.000000],[525375.000000, 184625.000000],[528875.000000, 187125.000000],[527125.000000, 186625.000000],[526625.000000, 184375.000000],[530304.000000, 181293.000000],[529995.000000, 181132.000000],[526375.000000, 185625.000000],[526875.000000, 185875.000000],[529625.000000, 182125.000000],[525875.000000, 184625.000000],[524510.000000, 185076.000000],[526125.000000, 183875.000000],[529125.000000, 184375.000000],[526875.000000, 184375.000000],[528375.000000, 187375.000000],[526375.000000, 184375.000000],[529302.000000, 185530.000000],[524875.000000, 184875.000000],[527625.000000, 185625.000000],[525625.000000, 185125.000000],[529125.000000, 183875.000000],[529480.000000, 184844.000000],[528875.000000, 184375.000000],[528625.000000, 183875.000000],[527875.000000, 184125.000000],[529375.000000, 185125.000000],[528125.000000, 184125.000000],[526625.000000, 184125.000000],[531207.000000, 181887.000000],[530699.000000, 181886.000000],[527875.000000, 184875.000000],[528875.000000, 185125.000000],[529625.000000, 183625.000000],[530294.000000, 181304.000000],[527875.000000, 185375.000000],[525125.000000, 185875.000000],[529625.000000, 184875.000000],[524875.000000, 184375.000000],[525625.000000, 185375.000000],[526375.000000, 184125.000000],[530018.000000, 182893.000000],[529875.000000, 181625.000000],[529375.000000, 183625.000000],[529625.000000, 184375.000000],[526375.000000, 185125.000000],[527710.000000, 185254.000000],[530124.000000, 181432.000000],[524894.000000, 184760.000000],[528375.000000, 184375.000000],[526875.000000, 184625.000000],[526625.000000, 186125.000000],[527625.000000, 185125.000000],[526125.000000, 187125.000000],[527625.000000, 184875.000000],[525138.000000, 184544.000000],[524875.000000, 185125.000000],[526625.000000, 184625.000000],[524375.000000, 185125.000000],[526375.000000, 186125.000000],[527087.000000, 187418.000000],[526375.000000, 184875.000000],[531125.000000, 182125.000000],[524875.000000, 184625.000000],[526375.000000, 185875.000000],[529375.000000, 183375.000000],[527875.000000, 185625.000000],[529125.000000, 184125.000000],[528625.000000, 184875.000000],[527625.000000, 185875.000000],[529875.000000, 184875.000000],[527375.000000, 184875.000000],[528875.000000, 186625.000000],[527125.000000, 184375.000000],[525875.000000, 184875.000000],[528625.000000, 184625.000000],[530875.000000, 181875.000000],[525125.000000, 184875.000000],[528716.000000, 184194.000000],[528875.000000, 184625.000000],[529125.000000, 185125.000000],[526875.000000, 185375.000000],[524125.000000, 185625.000000],[524625.000000, 184875.000000],[528248.000000, 187297.000000],[529709.000000, 183067.000000],[528375.000000, 186375.000000],[525875.000000, 184375.000000],[528625.000000, 183375.000000],[529375.000000, 185375.000000],[528125.000000, 185625.000000],[528625.000000, 187125.000000],[529625.000000, 183375.000000],[526125.000000, 185625.000000],[530239.000000, 181991.000000],[529875.000000, 183625.000000],[527625.000000, 184625.000000],[529875.000000, 184125.000000],[529375.000000, 184125.000000],[526125.000000, 186875.000000],[524520.000000, 185296.000000],[528875.000000, 185875.000000],[530875.000000, 182375.000000],[527125.000000, 184875.000000],[529625.000000, 185125.000000],[530931.000000, 181344.000000],[527375.000000, 185125.000000],[527875.000000, 185125.000000],[525375.000000, 185625.000000],[528375.000000, 186875.000000],[527875.000000, 184375.000000],[525625.000000, 185625.000000],[531095.000000, 182045.000000],[524875.000000, 185375.000000],[525375.000000, 185875.000000],[529576.000000, 181636.000000],[527125.000000, 185125.000000],[529625.000000, 184625.000000],[526885.000000, 185552.000000],[526876.000000, 184126.000000],[527625.000000, 185375.000000],[529875.000000, 184625.000000],[525125.000000, 185625.000000],[528375.000000, 185125.000000],[527125.000000, 183875.000000],[528917.000000, 185052.000000],[529138.000000, 185243.000000],[526875.000000, 185625.000000],[525375.000000, 184875.000000],[527370.000000, 185465.000000],[529826.000000, 182479.000000],[527625.000000, 184125.000000],[529943.000000, 181065.000000],[526125.000000, 184875.000000],[528875.000000, 184125.000000],[526375.000000, 186375.000000],[525375.000000, 184375.000000],[525125.000000, 186125.000000],[524375.000000, 185375.000000],[526875.000000, 184875.000000],[528625.000000, 186625.000000],[527375.000000, 185625.000000],[525625.000000, 183625.000000],[529626.000000, 182375.000000],[525125.000000, 185375.000000],[528625.000000, 183125.000000],[529150.000000, 185318.000000],[529900.000000, 184802.000000],[530875.000000, 181625.000000],[530625.000000, 181875.000000],[530589.000000, 181393.000000],[526105.000000, 183920.000000],[528125.000000, 187375.000000],[530740.000000, 181719.000000],[525375.000000, 186125.000000],[525875.000000, 184125.000000],[526375.000000, 185375.000000],[527625.000000, 183625.000000],[528375.000000, 186625.000000],[527633.000000, 183879.000000],[524890.000000, 185148.000000],[524976.000000, 184778.000000],[529510.000000, 184186.000000],[526606.000000, 184125.000000],[526768.000000, 184352.000000],[526125.000000, 185125.000000],[528125.000000, 186625.000000],[525875.000000, 185875.000000],[528375.000000, 184875.000000]]; 
+             var display_stats = {};
+ 			function inViewport(el) {
+                 var elH = jQuery(el).outerHeight(), H = jQuery(window).height(), r = jQuery(el)[0].getBoundingClientRect(), t = r.top, b = r.bottom;
+                 return Math.max(0, t > 0 ? Math.min(elH, H - t) : (b < H ? b : H));
+             }
+             function showGraph() { 
+                var region = jQuery('#id_zoom_cluster_region').is(':checked') ? jQuery.extend({}, cluster_region) : jQuery.extend({}, entire_region); 
+                var row = jQuery('.row'); 
+                var options_div = jQuery('.chart-options-section'); 
+                var dimension;
+                if (jQuery('#id_fit_graph_viewport').is(':checked'))
+                   dimension = Math.max(jQuery(window).height() - jQuery('#id_banner').height(), inViewport('.row')) - 50;
+                else
+                  dimension = Math.max(jQuery(row).width() - jQuery(options_div).width() - 100, jQuery(options_div).width() - 50);
+                jQuery('.chart-column').html("<div id = 'chartContainer' name = 'chartContainer' style = 'margin-left: 20px;'></div>"); 
+                chart = new Chart.Bubble('chartContainer', {zmin:region.zmin,zmax:region.zmax,xsteps:region.xsteps,ysteps:region.ysteps,bubbleSize:region.bubbleSize,xmin:region.xmin,xmax:region.xmax,ymin:region.ymin,ymax:region.ymax,width:dimension,height:dimension,
+                                         title: jQuery('.title-setter').val() || 'Cartesian Coordinates Map',
+                                         points_mouseoveronly: false, 
+                                         x_sinusoidal_factor: 1.000000, 
+                                         showGrid:document.getElementById('id_show_grid_lines').checked, 
+                                         showAxes:document.getElementById('id_show_axes').checked});  
+                 display_stats = {displayed_clusters: 0, displayed_cluster_points: 0, displayed_points: 0};
+                 jQuery.each(clusters, function(i, c) { 
+                     var add = true;
+                     if (parameters.scanrate == 3) {
+                         if (jQuery('#id_view_high').is(':checked')) add &= (c.highrate == true);
+                         if (jQuery('#id_view_low').is(':checked')) add &= (c.highrate == false);
+                     }
+                     if (jQuery('#id_hierarchical').is(':checked') && jQuery('#id_gini').is(':checked')) add &= (c.hierarchical == true && c.gini == true);
+                     else if (jQuery('#id_hierarchical').is(':checked')) add &= (c.hierarchical == true);
+                     else if (jQuery('#id_gini').is(':checked')) add &= (c.gini == true);
+                     else add &= true;
+                     if (jQuery('#id_view_significant').is(':checked')) add &= (c.significant == true);
+                     if (add && jQuery('#id_cluster_circles').is(':checked')) {
+                         if (c.ellipse)
+                             chart.addEllipticBubble(c.id, c.x, c.y, c.z, c.semimajor, c.angle, c.shape, c.color, c.tip);
+                         else
+                             chart.addBubble(c.id, c.x, c.y, c.z, c.color, c.tip);
+                         display_stats.displayed_clusters++;
+                     }
+                     if (add && jQuery('#id_cluster_locations').is(':checked')) {
+                         chart.addPoints(c.id, c.points, c.pointscolor);
+                         display_stats.displayed_cluster_points += c.points.length;
+                         display_stats.displayed_points += c.points.length;
+                     } else if (jQuery('#id_show_location_points').is(':checked')) {
+                         chart.addPoints(0, c.points, '#00001a');
+                         display_stats.displayed_points += c.points.length;
+                     }
+                 });
+                 if (jQuery('#id_show_location_points').is(':checked')) {
+                     if (jQuery('#id_zoom_cluster_region').is(':checked')) {
+                         chart.addPoints(0, cluster_region_points, '#00001a'); 
+                         display_stats.displayed_points += cluster_region_points.length; 
+                     } else {
+                         chart.addPoints(0, entire_region_points, '#00001a');
+                         display_stats.displayed_points += entire_region_points.length;
+                     }
+                 }
+                jQuery('#id_cluster_count').html(display_stats.displayed_clusters); 
+                jQuery('#id_cluster_point_count').html(display_stats.displayed_cluster_points); 
+                jQuery('#id_point_count').html(display_stats.displayed_points); 
+                chart.drawLabels(); 
+                chart.redraw(); 
+             } 
+             window.addEvent('domready', function(){ 
+                try { 
+                     if ( clusters.every(function(c) { return c.significant == false; }))
+                         jQuery('#id_view_all').prop('checked', true);
+                     //if ( clusters.every(function(c) { return c.hierarchical == false; }))
+                     //    jQuery('#id_hierarchical').prop('checked', false);
+                     //if (clusters.every(function(c) { return c.gini == false; }))
+                     //    jQuery('#id_gini').prop('checked', false);
+                     jQuery('#id_rates_option').toggle(parameters.scanrate == 3);
+                     jQuery('#id_secondary_clusters_option').toggle(parameters.giniscan);
+                     showGraph();
+                     jQuery('.options-row :input').on('click', function(){ showGraph(); });
+                     jQuery('.title-setter').keyup(function() { showGraph(); });
+                     jQuery(window).resizeend(function() { showGraph(); });
+                     jQuery('#print_png').on('click', function(){
+                         var filename = chart.options.title || 'cluster-graph';
+                         chart.canvas.toBlob(function(blob) {
+                             saveAs(blob, filename + '.png');
+                         });
+                         return false;
+                     });
+                } catch (error) { 
+ 				   jQuery('#load_error').html('There was a problem loading the graph. Please <a href="mailto:techsupport@satscan.org?Subject=Graph%20Error" target="_top">email</a> technical support and attach the file:<br/>' + window.location.href.replace('file:///', '').replace(/%20/g, ' ') ).show(); 
+              	   throw( error ); 
+                 } 
+             }); 
+         </script> 
+     </head> 
+     <body style="margin:0;background-color: #fff;"> 
+         <table id="id_banner" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8FAFA" style="border-bottom: 3px double navy;"> 
+         <tbody><tr> 
+         <td width="120" align="center" bgcolor="#DBD7DB"><img src="https://www.satscan.org/images/swe2.jpg" alt="&Ouml;stersund map" title="Östersund map" width="120" height="115" hspace="1" border="0"></td> 
+         <td align="right" bgcolor="#D4DCE5"><img src="https://www.satscan.org/images/satscan_title2.jpg" alt="SaTScan&#0153; - Software for the spatial, temporal, and space-time scan statistics" title="SaTScan&#0153; - Software for the spatial, temporal, and space-time scan statistics" width="470" height="115"></td> 
+         <td width="25%" bgcolor="#F8FAFA" align="right"><img src="https://www.satscan.org/images/nyc2.jpg" alt="New York City map" title="New York City map" width="112" height="115" hspace="1" border="0" align="middle"></td> 
+         </tr></tbody></table> 
+ 		<div id="load_error" style="color:#101010; text-align: center;font-size: 1.2em; padding: 20px;background-color: #ece1e1; border: 1px solid #e49595; display:none;"></div> 
+     <div class="container-fluid main-content"> 
+         <div class="row"> 
+             <div class="col-md-3 chart-options-section"> 
+                 <fieldset> 
+                 <div class="options-row"> 
+                     <label class="option-section" for="title_obs">Title</label> 
+                     <div>
+                         <input type="text" style="width:95%;padding:1px;" class="title-setter" id="title_obs" value="Cartesian Coordinates Map"> 
+                         <p class="help-block">Title can be changed by editing this text.</p> 
+                     </div> 
+                 </div> 
+                 <div class="options-row"> 
+                     <label class="option-section" for="title_obs">Print</label> 
+                     <div class="print-section"> 
+                         <a href="#" onclick="javascript:window.print();return false;"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</a> 
+                         <a href="#" id="print_png"><span class="glyphicon glyphicon-picture" aria-hidden = "true"></span> Save Image</a> 
+                     </div> 
+                 </div> 
+                 <div class="options-row"> 
+                     <div id="id_significance_option">
+                         <label><input type="radio" name="view_significance" id="id_view_significant" value="entire" checked=checked />Significant clusters</label>
+                         <label><input type="radio" name="view_significance" id="id_view_all" value="cluster" />All clusters</label>
+                         <p class="help-block">Toggle display between significant and all clusters.</p>
+                     </div>
+                     <div id="id_rates_option"> 
+                         <label><input type="radio" name="view_rate" id="id_view_highlow" value="entire" checked=checked />High and low clusters</label>
+                         <label><input type="radio" name="view_rate" id="id_view_high" value="cluster"/>High only</label>
+                         <label><input type="radio" name="view_rate" id="id_view_low" value="cluster"/>Low only</label>
+                         <p class="help-block">Toggle display of clusters for scan rate.</p>
+                     </div> 
+                     <div id="id_secondary_clusters_option"> 
+                         <div>Secondary Clusters:</div>
+                         <label style="margin-left:15px;"><input type="checkbox" id="id_hierarchical" value="secondary" />Hierarchical</label>
+                         <label style="margin-left:15px;"><input type="checkbox" id="id_gini" value="secondary" />Gini</label>
+                         <p class="help-block">Display options for secondary clusters.</p>
+                     </div> 
+                     <div>Show clusters using:</div>
+                     <label style="margin-left:15px;"><input type="checkbox" id="id_cluster_circles" value="cluster" checked=checked />Circles / Ellipses</label>
+                     <label style="margin-left:15px;"><input type="checkbox" id="id_cluster_locations" value="cluster" />Locations</label>
+                     <p class="help-block">Display options for clusters.</p>
+                     <div id="id_zoom_cluster_option" style="display:block;">
+                     <label><input type="checkbox" id="id_zoom_cluster_region"/>Zoom in on cluster region</label>
+                     <p class="help-block">Focus grid region on reported clusters.</p>
+                     </div>
+                     <label><input type="checkbox" id="id_show_grid_lines" checked=checked />Show grid lines</label>
+                     <p class="help-block">Toggle display of graph grid lines.</p>
+                     <label><input type="checkbox" id="id_show_axes" checked=checked />Show x and y axes</label>
+                     <p class="help-block">Toggle display of graph x / y axes.</p>
+                     <label><input type="checkbox" id="id_show_location_points" checked=checked />Show all location points</label>
+                     <p class="help-block">Toggle display of location points.</p>
+                     <label><input type="checkbox" id="id_fit_graph_viewport" />Fit graph to viewport</label>
+                     <p class="help-block">Attempts to keep entire graph in view.</p>
+                 </div> 
+                 <div id="id_display_count">
+                     <fieldset>
+                             <legend style="font-size:14px; margin-bottom:0;">Display Data:</legend>
+                             <div><span id="id_cluster_count"></span> Clusters</div>
+                             <div><span id="id_cluster_point_count"></span> Cluster Locations</div>
+                             <div><span id="id_point_count"></span> Total Locations</div> 
+                     </fieldset>
+                 </div>
+                 </fieldset> 
+                 <div style="font-style:italic; font-size:smaller;">Generated with SaTScan v9.6</div>
+             </div> 
+             <div class="col-md-9 chart-column"> 
+                 <div id='chartContainer' name='chartContainer'></div> 
+             </div> 
+         </div> 
+      </div> 
+      </body> 
+ </html> 
+
+
