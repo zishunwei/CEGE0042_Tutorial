@@ -1,3 +1,4 @@
-*.GLSL linguist-language=R
+*.adf linguist-language=R
+*.xml linguist-language=R
 *.html linguist-language=R
 
